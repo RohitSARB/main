@@ -1,0 +1,481 @@
+$ history
+    1  ls
+    2  git --version
+    3  git config --global core.editor "code --wait"
+    4  pwd
+    5  git config --global user.name "rohit"
+    6  git config --global user.email "rohit.sharma@aorbis.com"
+    7  git config --list
+    8  git config user.name
+    9  git config --unset code.editor
+   10  git config --global --unset code.editor
+   11  git config --global core.editor "code --wait"
+   12  git config --global init.defaultBranch main
+   13  git config --global user.name
+   14  git config --local user.name
+   15  git config --system user.name
+   16  ped
+   17  pwd
+   18  ls
+   19  cd WORK/
+   20  ls
+   21  cd STUDY/
+   22  ld
+   23  ls
+   24  mkdir git_study
+   25  cd git_study/
+   26  ls
+   27  git init
+   28  ls -a
+   29  ls
+   30  git status
+   31  git add sample.txt
+   32  git status
+   33  git rm --cached sample.txt
+   34  git status
+   35  git add -A
+   36  git add --all
+   37  git status
+   38  git restore --staged sample.txt
+   39  git rm --cached sample.txt
+   40  git add sample.txt
+   41  git reset HEAD sample.txt
+   42  git reset --HEAD sample.txt
+   43  nano rohit.txt
+   44  git status
+   45  echo rohit.txt
+   46  cat rohit.txt
+   47  cat rohit.txt sample.txt
+   48  git log
+   49  git commit -m 'first commit'
+   50  git log
+   51  git status
+   52  git commit -a -m 'second commit'
+   53  nano rohit.txt
+   54  git commit -a -m 'second commit'
+   55  git commit -a -m 'second commit'
+   56  git commit -a -m 'second commit'
+   57  git status
+   58  git log
+   59  git commit
+   60  git add rohit.txt
+   61  git status
+   62  git commit
+   63  git status
+   64  git log
+   65  cls
+   66  clear
+   67  git status
+   68  git log
+   69  git commit --no-edit
+   70  git log --oneline
+   71  git log --stat
+   72  git tag
+   73  git tag v1.0
+   74  git tag -a v1.0 -m 'Version 1.0 release'
+   75  git tag -a v1.0 -m 'Version 1.1 release'
+   76  git tag -a v1.1 -m 'Version 1.1 release'
+   77  git log
+   78  git log --oneline
+   79  git tag v1.1 071d5ba
+   80  git tag
+   81  git tag v1.0 f12dd74
+   82  gishow v1.0
+   83  git show v1.0
+   84  git show v1.1
+   85  git push origin v1.0
+   86  git remote -v
+   87  git tag -d v1.1
+   88  git tag -a v1.1 -m 'annotated tag'
+   89  git show v1.1
+   90  git tag -f v1.1 92ceb16
+   91  git show v1.1
+   92  git tag v1.2
+   93  git show v1,2
+   94  git show v1.2
+   95  git tag -d v1.1
+   96  git tag -d v1.2
+   97  git tag -d v1.0
+   98  git tags
+   99  git tag
+  100  git log --oneline
+  101  git tag v1.0 071d5ba
+  102  git show v1.0
+  103  git log --oneline --decorate
+  104  git log --oneline --decorate --graph
+  105  git status
+  106  ls
+  107  nano sample.txt
+  108  git status
+  109  git stash
+  110  git stash list
+  111  git status
+  112  git stash apply
+  113  git status
+  114  git stash list
+  115  git stash pop
+  116  git stash list
+  117  git stash push -m 'temp'
+  118  git stash list
+  119  git stash pop
+  120  git stash list
+  121  git stash -u
+  122  git stash show
+  123  git stash show -p
+  124  history
+  125  git stash drop
+  126  git stash list
+  127  git stash clear
+  128  git stash list
+  129  git branch
+  130  git stash -m 'temp stash'
+  131  git stash list
+  132  git stash push -m 'temp'
+  133  git stash branch new-feature
+  134  get log --oneline
+  135  git log --oneline
+  136  git show diff
+  137  git diff
+  138  git diff --staged
+  139  git show 071d5ba
+  140  git log --since='1 week ago'
+  141  git log --stat
+  142  git log --graph
+  143  git help --all
+  144  git branch
+  145  git stash list
+  146  git citool
+  147  touchz temp.txt
+  148  touch temp.txt
+  149  git status
+  150  git clean -f
+  151  git status
+  152  ls
+  153  git describe
+  154  git format-patch HEAD~3
+  155  git format-patch
+  156  git show
+  157  gitk
+  158  git grep 'rohit'
+  159  git help commit
+  160  touch temp.txt
+  161  git commit -p
+  162  git add temp.txt
+  163  git commit -p
+  164  git add -h
+  165  git help -g
+  166  history
+  167  ls
+  168  cd WORK/
+  169  ls
+  170  cd STUDY/
+  171  ls
+  172  cs git_study
+  173  cd git_study
+  174  l
+  175  ls
+  176  git show
+  177  git branch temp_main
+  178  git branch
+  179  git checkout temp_main
+  180  git checkout temp_main
+  181  git checkout temp_main
+  182  git branch
+  183  git status
+  184  ls
+  185  nano temp.txt
+  186  git status
+  187  git add --all
+  188  git status
+  189  git commit -m 'added text into temp.txt from temp_branch'
+  190  ls
+  191  cat tempt.txt
+  192  cat temp.txt
+  193  git switch main
+  194  git switch -c temp_main
+  195  git branch
+  196  git switch -c emergency
+  197  git branch -d emergency
+  198  git switch temp_main
+  199  git branch -d emergency
+  200  git merge temp_main
+  201  cat temp.txt
+  202  git switch main
+  203  cat temp,txt
+  204  ls
+  205  cat temp.txt
+  206  git merge temp_main
+  207  git switch temp_main
+  208  nano temp.txt
+  209  git switch main
+  210  git merge --no-ff temp_main
+  211  git merge --abort
+  212  git switch temp_main
+  213  git status
+  214  git add --all
+  215  git switch main
+  216  git merge --no-ff temp_main
+  217  cat temp.txt
+  218  git merge --abort
+  219  git log
+  220  git status
+  221  git commit
+  222  git log --oneline --graph --decorate --all
+  223  git branch
+  224  git status
+  225  ls
+  226  nano sample.txt
+  227  git add sample.txt
+  228  git commit -m 'sample.txt is changed'
+  229  switch temp_main
+  230  git switch temp_main
+  231  git status
+  232  nano temp.txt
+  233  gid add --all
+  234  git add --all
+  235  git commit -m 'temp file is altered'
+  236  git switch main
+  237  git merge --no-ff temp_main
+  238  nano temp.txt
+  239  git status
+  240  git add --all
+  241  git commit -m 'new commit'
+  242  git status
+  243  git merge --no-ff temp_main
+  244  git log --oneline --graph --decorate --all
+  245  git restore temp.txt
+  246  cat temp.txt
+  247  git status
+  248  nano temp.txt
+  249  git status
+  250  git add temp.txt
+  251  git status
+  252  git restore --staged temp.txt
+  253  git reflog
+  254  git log --oneline --graph --decorate --all
+  255  git cherry-pick
+  256  git cherry-pick f169960
+  257  git cherry-pick f221222
+  258  git commit -m 'recent'
+  259  git add --all
+  260  git commit -m 'recent'
+  261  git cherry-pick f221222
+  262  cat temp.txt
+  263  git HEAD~
+  264  git show HEAD
+  265  git cherry-pick --abort
+  266  git reset HEAD~
+  267  cat temp,txt
+  268  git status
+  269  cat temp.txt
+  270  git diff
+  271  git reflog
+  272  git reset --hard HEAD@{2}
+  273  git status
+  274  cat temp.txt
+  275  git commit --amend 'ammend'
+  276  git commit --amend -m 'amend'
+  277  git commit --amend
+  278  git add .
+  279  git status
+  280  git branch -vv
+  281  eval $(ssh-agent -s)
+  282  ssh-keygen -t rsa -b 4096 -C 'rohit.sharma@aorbis.com'
+  283  ssh-add ~/.ssh/id_rsa
+  284  ssh-add -l
+  285  cat ~/.ssh/id_rsa.pub
+  286  ssh -T git@github.com
+  287  ssh -T -p 443 git@ssh.github.com
+  288  nano ~/.ssh/config
+  289  ssh -T git@github.com
+  290  git remote add origin git@github.com:RohitSARB/main.git
+  291  git branch -vv
+  292  git remote set-url origin git@github.com:RohitSARB/main.git
+  293  git push
+  294  git push --set-upstream origin main
+  295  git pull origin main --allow-unrelated-histories
+  296  ls
+  297  git push -u origin main
+  298  git branch -vv
+  299  git log origin/main
+  300  git push -u origin temp_main
+  301  git fetch origin
+  302  git fetch origin
+  303  git diff origin/main
+  304  git merge origin/main
+  305  git branch -vv
+  306  git tag
+  307  git push --tags
+  308  git pull --rebase
+  309  git switch temp_main
+  310  git branch emergency
+  311  git push origin emergency
+  312  git push origin --delete emergency
+  313  git branch emergency
+  314  git branch -m emergency urgency
+  315  git branch -a
+  316  nano readme.md
+  317  git push --force origin main
+  318  git push --all origin
+  319  git status
+  320  git add .
+  321  git commit -m 'readme changed'
+  322  git push --force origin main
+  323  git push --all origin
+  324  git remote -v
+  325  git check-attr --all
+  326  git check-attr --all rohit.txt
+  327  touch .gitattributes
+  328  nano .gitattributes
+  329  git lfs install
+  330  git lfs track "*.txt"
+  331  git lfs ls-files
+  332  ls
+  333  git status
+  334  git rm --cached temp.txt
+  335  git status
+  336  git commit --all
+  337  git status
+  338  nano .gitignore
+  339  git commit -a -m 'all'
+  340  git add .gitignore
+  341  git commit .gitignore
+  342  git status
+  343  ls
+  344  git config gpg.format ssh
+  345  git config --global commit.gpgsign true
+  346  git log --show-signature
+  347  git log --oneline
+  348  git verify-commit b60ac37
+  349  ls ~/.ssh
+  350  git config --global user.signingkey ~/.ssh/id_rsa.pub
+  351  git log --show-signature
+  352  echo "signed commit test" >> signed.txt
+  353  git add signed.txt
+  354  git commit -m "signed commit"
+  355  git log --show-signature -1
+  356  git config --global --list
+  357  git config --global gpg.format ssh
+  358  git config --global --list
+  359  echo "signed commit test" >> signed1.txt
+  360  git add signed1.txt
+  361  git commit -m "signed commit"
+  362  git log --show-signature -1
+  363  nano ~/.ssh/allowed_signers
+  364  cat ~/.ssh/id_rsa.pub
+  365  nano ~/.ssh/allowed_signers
+  366  nano ~/.ssh/allowed_signers
+  367  git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+  368  echo 'signed test' >> sign.txt
+  369  git add sign.txt
+  370  git commit -m 'signed commit'
+  371  git log --show-signature -1
+  372  sed -i 's/\r$//' ~/.ssh/allowed_signers
+  373  git log --show-signature -1
+  374  cat ~/.ssh/id_rsa.pub
+  375  nano ~/.ssh/allowed_signers
+  376  git log --show-signature -1
+  377  nano ~/.ssh/allowed_signers
+  378  nano ~/.ssh/allowed_signers
+  379  cat -A ~/.ssh/allowed_signers
+  380  git log --show-signature -1
+  381  git push origin main
+  382  git push origin main
+  383  git push --force-with-lease origin main
+  384  git pull origin main
+  385  git show diff
+  386  gitdiff
+  387  git diff
+  388  nano .gitignoer
+  389  nano .gitignore
+  390  git add .gitignore
+  391  git commit
+  392  git push origin main
+  393  git switch temp main
+  394  git switch temp_main
+  395  ls
+  396  git status
+  397  git add readme.md
+  398  git switch temp_main
+  399  git commit readme.md
+  400  git switch temp_main
+  401  git add readme.md .gitattributes
+  402  git commit -a -m 'readme and getattributes'
+  403  git switch temp_main
+  404  git status
+  405  git commit -a -m
+  406  git commit -a
+  407  git add README.md
+  408  git commit README.md
+  409  git commit -m 'update readme'
+  410  git commit -am 'readme'
+  411  git status
+  412  git add README.md
+  413  git status
+  414  git diff README.md
+  415  git diff --cached
+  416  git add -A
+  417  git status
+  418  git check-attr -all README.md
+  419  git check-attr --all README.md
+  420  git config --get core.autocrlf
+  421  git add --renormalize README.md
+  422  git status
+  423  git commit -am 'readme'
+  424  git switch temp_main
+  425  ls
+  426  nano sample.txt
+  427  git add -A
+  428  git commit -am 'new commit'
+  429  git log
+  430  git log --oneline
+  431  git checkout main
+  432  git cherry-pick 1e3854d --edit
+  433  git cherry-pick 1e3854d --no-commit
+  434  git switch temp_main
+  435  git add -A
+  436  git commit --all
+  437  git commit -m 'latest one'
+  438  git diff
+  439  git switch temp_main
+  440  git status
+  441  git switch main
+  442  git cherry-pick 1e3854d --no-commit
+  443  git format-patch -1
+  444  git format-patch HEAD~3
+  445  git apply 0001-readme-and-getattributes.patch
+  446  git apply -R 0001-readme-and-getattributes.patch
+  447  git apply 0001-readme-and-getattributes.patch
+  448  git mergetool
+  449  history
+  450  ls .git/hooks
+  451  ls
+  452  cd WORK/STUDY/git_study/
+  453  ls .git/hooks
+  454  git status
+  455  cd WORK/STUDY/git_study/
+  456  git status
+  457  git add --all
+  458  git status
+  459  git push -u origin main
+  460  ls
+  461  git submodule add https://github.com/RohitSARB/submodule
+  462  ls
+  463  ls submodule/
+  464  git sumodule update --init
+  465  git submodule update --init
+  466  git status
+  467  nano .gitmodule
+  468  ls -a
+  469  cat .gitmodules
+  470  git submodule status
+  471  git remote -v
+  472  git remote show upstream
+  473  git remote show origin
+  474  git branch
+  475  git push origin temp_main
+  476  git remote show origin
+  477  git status remote origin
+  478  git fetch origin
+  479  git get log origin
+  480  history
