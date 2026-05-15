@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playwright Advanced Playground</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .card { border: 1px solid #ccc; margin: 10px 0; padding: 10px; }
+    #infinite { height: 300px; overflow-y: scroll; border: 1px solid black; }
+    #menu { width: 200px; }
+    #submenu { display: none; margin-left: 20px; }
+    button { margin: 5px; }
+  </style>
+</head>
+<body>
+
+<h1>Playwright Advanced Playground</h1>
+
+<!-- FORM -->
+<h2>Form</h2>
+<input id="username" placeholder="Username">
+<input id="password" type="password">
+<button id="submit-btn">Submit</button>
+<p id="form-result"></p>
+
+<!-- HOVER MENU -->
+<h2>Hover Menu</h2>
+<div id="menu">
+  <div id="menu-item">Hover me</div>
+  <div id="submenu">
+    <button id="submenu-btn">Hidden Action</button>
+  </div>
+</div>
+
+<!-- MULTI TAB -->
+<h2>Multi Tab</h2>
+<a id="new-tab" href="https://example.com" target="_blank">Open New Tab</a>
+
+<!-- INFINITE SCROLL -->
+<h2>Infinite Scroll</h2>
+<div id="infinite"></div>
+
+<!-- IFRAME -->
+<h2>Iframe</h2>
+<iframe srcdoc="<button id='frame-btn'>Frame Button</button>" width="300"></iframe>
+
+<script>
+  // form
+  document.getElementById("submit-btn").onclick = () => {
+    document.getElementById("form-result").innerText = "Form Submitted";
+  };
+
+  // hover menu
+  const menuItem = document.getElementById("menu-item");
+  const submenu = document.getElementById("submenu");
+
+  menuItem.onmouseenter = () => submenu.style.display = "block";
+  menuItem.onmouseleave = () => submenu.style.display = "none";
+
+  // infinite scroll
+  const container = document.getElementById("infinite");
+  let count = 0;
+
+  function loadMore() {
+    for (let i = 0; i < 5; i++) {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerText = "Item " + (++count);
+      container.appendChild(div);
+    }
+  }
+
+  loadMore();
+  container.addEventListener("scroll", () => {
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+      loadMore();
+    }
+  });
+</script>
+
+</body>
+</html>

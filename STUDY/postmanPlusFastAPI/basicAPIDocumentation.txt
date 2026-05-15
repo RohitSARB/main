@@ -1,0 +1,787 @@
+import requests
+
+# # GET https://api.agify.io?name=rohit
+# url = "https://api.agify.io"
+# params = {
+#     "name" : "Rohit"
+# }
+
+# response = requests.get(url, params=params)
+# print("response: ",response)
+# print("connection: ",response.connection)
+# print("cookies: ",response.cookies)
+# print("status_code: ",response.status_code)
+# print("request: ",response.request)
+# print("reason: ",response.reason)
+# print("json: ",response.json())
+
+
+
+
+
+
+
+
+# GET with Headers
+'''What are Headers?
+Headers are key–value pairs sent along with the request that provide extra information about:
+Who is making the request
+What format is expected
+Authentication details
+Client behavior (browser, app, tool, etc.)
+Think of headers as metadata about the request, not the data itself.'''
+
+# # Target URL
+# url = "https://httpbin.org/get"
+
+# # Query parameters
+# params = {
+#     "search": "python",
+#     "page": 1
+# }
+
+# # Headers
+# headers = {
+#     "User-Agent": "PostmanLearning/1.0"
+# }
+
+# # Send GET request
+# response = requests.get(url, params=params, headers=headers)
+
+# # Print response details
+# print("Status Code:", response.status_code)
+# print("Response JSON:")
+# print(response.json())
+
+
+
+
+
+
+
+# # POST Request (JSON Body)
+# url = 'https://jsonplaceholder.typicode.com/posts'
+# payload = {
+#     "title" : "API Learning",
+#     "body" : "Postman + Pyhton",
+#     "userId" : 1
+# }
+
+# response = requests.post(url, json=payload)
+# print(response.status_code)
+# print(response.json())
+
+
+
+
+
+
+
+
+# # PUT vs PATCH
+# # PUT (replace)
+# url = "https://jsonplaceholder.typicode.com/posts/1"
+
+# payload = {
+#     "id": 1,
+#     "title": "Updated Title",
+#     "body": "Full replace",
+#     "userId": 1
+# }
+
+# requests.put(url, json=payload)
+
+# # PATCH (partial)
+# payload = {
+#     "title": "Partially Updated"
+# }
+
+# requests.patch(url, json=payload)
+'''
+Both PUT and PATCH are used to update existing resources, but they behave very differently.
+
+🔹 PUT (Full Replace)
+What PUT Means
+
+PUT replaces the entire resource
+
+You must send all fields, even unchanged ones
+
+Missing fields may be removed or overwritten
+
+Think of PUT as:
+
+“Here is the new version of this object. Replace everything.”
+
+PUT Characteristics
+
+Full update
+
+Idempotent (same request → same result)
+
+Risky if fields are omitted
+
+PUT Example (Python)
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts/1"
+
+payload = {
+    "id": 1,
+    "title": "Updated Title",
+    "body": "Full replace",
+    "userId": 1
+}
+
+response = requests.put(url, json=payload)
+
+print(response.status_code)
+print(response.json())
+
+PUT Sample Output
+200
+{
+  "id": 1,
+  "title": "Updated Title",
+  "body": "Full replace",
+  "userId": 1
+}
+
+
+✔ Entire resource replaced
+✔ Any missing field would be lost
+
+🔹 PATCH (Partial Update)
+What PATCH Means
+
+PATCH updates only specified fields
+
+Unsent fields remain unchanged
+
+Safer for small updates
+
+Think of PATCH as:
+
+“Change only this part, keep everything else the same.”
+
+PATCH Example (Python)
+import requests
+
+url = "https://jsonplaceholder.typicode.com/posts/1"
+
+payload = {
+    "title": "Partially Updated"
+}
+
+response = requests.patch(url, json=payload)
+
+print(response.status_code)
+print(response.json())
+
+PATCH Sample Output
+200
+{
+  "id": 1,
+  "title": "Partially Updated",
+  "body": "Full replace",
+  "userId": 1
+}
+
+
+✔ Only title changed
+✔ Other fields preserved
+
+🔹 PUT vs PATCH (Side-by-Side)
+Feature	                    PUT	                PATCH
+Update type	            Full replace	    Partial update
+Requires all fields	    Yes	                No
+Risk of data loss	    High	            Low
+Payload size	        Large	            Small
+Best use	            Overwrite object	Small changes'''
+
+
+
+
+
+
+
+# # 5.5 DELETE Request
+# url = "https://jsonplaceholder.typicode.com/posts/1"
+# response = requests.delete(url)
+
+# print(response.status_code)
+
+'''🔹 Common DELETE Status Codes
+Status Code	    Meaning
+200	            Deleted successfully (with response)
+204	            Deleted successfully (no response body)
+404	            Resource not found
+401	            Unauthorized
+403	            Forbidden'''
+
+'''DELETE can fail for many reasons:
+
+Resource doesn’t exist
+
+No permission
+
+Already deleted
+
+Server error
+
+❌ Naive DELETE (don’t do this)
+requests.delete(url)
+
+
+You have no idea if it worked.
+
+✅ Safe DELETE Pattern
+import requests
+
+response = requests.delete(url)
+
+if response.status_code in (200, 204):
+    print("Deleted successfully")
+elif response.status_code == 404:
+    print("Resource not found (already deleted?)")
+elif response.status_code == 401:
+    print("Unauthorized")
+elif response.status_code == 403:
+    print("Forbidden")
+else:
+    print("Unexpected error:", response.status_code)
+
+
+💡 Key idea:
+Treat DELETE as confirmation-based, not blind execution.'''
+
+
+'''🔹 Hard Delete (Physical Removal)
+DELETE FROM users WHERE id = 5;
+
+Characteristics
+
+Data is gone forever
+
+Faster queries
+
+Dangerous if accidental
+
+When used
+
+Temporary data
+
+Cache entries
+
+Logs
+
+Non-critical records
+
+🔹 Soft Delete (Industry Standard)
+
+Instead of deleting, mark as deleted.
+
+Database Example
+UPDATE users
+SET is_deleted = true,
+    deleted_at = NOW()
+WHERE id = 5;
+
+API DELETE Actually Does:
+DELETE /users/5
+
+
+➡️ Behind the scenes:
+
+is_deleted = true
+
+Why Soft Delete?
+
+Audit trail
+
+Undo / restore
+
+Legal compliance
+
+Debugging
+
+💡 Most enterprise APIs use soft delete even if endpoint says DELETE.'''
+
+
+
+'''Bulk DELETE APIs
+
+HTTP spec technically allows a body in DELETE, but support varies.
+
+🔹 Pattern 1: Query-based Bulk Delete
+DELETE /orders?status=cancelled
+
+
+Python:
+
+requests.delete(
+    "https://api.example.com/orders",
+    params={"status": "cancelled"}
+)
+
+🔹 Pattern 2: Body-based Bulk Delete (Common)
+POST /orders/bulk-delete
+
+
+Payload:
+
+{
+  "ids": [1, 2, 3, 4]
+}
+
+
+Python:
+
+requests.post(
+    "https://api.example.com/orders/bulk-delete",
+    json={"ids": [1, 2, 3, 4]}
+)
+
+
+⚠️ Many APIs avoid DELETE for bulk operations to reduce risk.'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+You’re absolutely right to flag this as **VERY IMPORTANT**.
+Authentication is where most real-world API calls fail, and once this clicks, **90% of “401 / 403” pain disappears**.
+
+Let’s do **Section 6 – Authentication** cleanly and practically.
+
+---
+
+# 🔐 6. Authentication (VERY IMPORTANT)
+
+## Why Authentication Exists
+
+APIs need to know:
+
+* **Who you are**
+* **What you’re allowed to access**
+* **How to track usage**
+
+Without auth:
+
+* Data leaks
+* Abuse
+* No rate limiting
+
+---
+
+# 6.1 API Key Authentication
+
+### 🔹 Theory
+
+* API key is a **static secret**
+* Sent with every request
+* Usually tied to:
+
+  * An account
+  * A project
+  * Usage limits
+
+Think of it as:
+
+> “Here’s my key, trust me.”
+
+---
+
+### 🔹 Postman
+
+* Headers tab
+
+```
+x-api-key: ABC123
+```
+
+(Some APIs use `api_key`, `X-API-KEY`, or query params — docs decide.)
+
+---
+
+### 🔹 Python Example
+
+```python
+import requests
+
+url = "https://api.example.com/data"
+
+headers = {
+    "x-api-key": "ABC123"
+}
+
+response = requests.get(url, headers=headers)
+
+print(response.status_code)
+print(response.text)
+```
+
+---
+
+### 🔹 Common Errors
+
+| Status | Meaning                   |
+| ------ | ------------------------- |
+| 401    | Missing / invalid key     |
+| 403    | Key valid but not allowed |
+| 429    | Rate limit exceeded       |
+
+---
+
+### 🔹 Where API Keys Are Used
+
+* Internal services
+* Public APIs (Google, weather, maps)
+* Scrapers hitting protected endpoints
+
+⚠️ **Never hardcode keys in production**
+Use env vars.
+
+---
+
+# 6.2 Bearer Token (OAuth / JWT)
+
+This is the **most common modern auth**.
+
+---
+
+## 🔹 Theory
+
+Bearer token means:
+
+> “If you possess this token, you are authorized.”
+
+* Token is generated after login / OAuth flow
+* Sent in `Authorization` header
+* Usually **short-lived**
+
+---
+
+### 🔹 Header Format (Strict)
+
+```
+Authorization: Bearer <TOKEN>
+```
+
+⚠️ Space after `Bearer` is mandatory.
+
+---
+
+### 🔹 Postman
+
+* Authorization tab
+* Type: **Bearer Token**
+* Paste token
+
+Postman sets header automatically.
+
+---
+
+### 🔹 Python Example
+
+```python
+import requests
+
+url = "https://api.example.com/profile"
+
+headers = {
+    "Authorization": "Bearer YOUR_ACCESS_TOKEN"
+}
+
+response = requests.get(url, headers=headers)
+
+print(response.status_code)
+print(response.json())
+```
+
+---
+
+### 🔹 OAuth Flow (High-Level)
+
+```
+Login → Access Token → API Calls → Token Expiry → Refresh Token
+```
+
+JWT tokens usually contain:
+
+* User ID
+* Expiry
+* Permissions (scopes)
+
+---
+
+### 🔹 Common Errors
+
+| Status | Meaning                              |
+| ------ | ------------------------------------ |
+| 401    | Token missing / expired              |
+| 403    | Token valid, insufficient scope      |
+| 419    | Session expired (framework-specific) |
+
+---
+
+### 🔹 Pro Tip ⭐
+
+Always log token expiry:
+
+```python
+print(token["expires_in"])
+```
+
+---
+
+# 6.3 Basic Authentication
+
+Old, simple, still used internally.
+
+---
+
+## 🔹 Theory
+
+* Username + password
+* Base64 encoded
+* Sent in every request
+
+⚠️ **NOT encrypted** — must use HTTPS.
+
+---
+
+### 🔹 Python Example
+
+```python
+import requests
+
+url = "https://api.example.com/admin"
+
+response = requests.get(
+    url,
+    auth=("username", "password")
+)
+
+print(response.status_code)
+```
+
+Under the hood, Requests sends:
+
+```
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+```
+
+---
+
+### 🔹 When Basic Auth Is Used
+
+* Internal tools
+* Admin panels
+* Legacy systems
+* Temporary integrations
+
+---
+
+# 🔁 Auth Types Compared
+
+| Auth Type    | Security | Expiry | Usage                |
+| ------------ | -------- | ------ | -------------------- |
+| API Key      | Medium   | No     | Public/internal APIs |
+| Bearer Token | High     | Yes    | Modern apps          |
+| Basic Auth   | Low      | No     | Legacy/internal      |
+
+---
+
+# 🚫 Common Authentication Mistakes
+
+❌ Wrong header name
+❌ Missing `Bearer` keyword
+❌ Expired token
+❌ Using HTTP instead of HTTPS
+❌ Hardcoding secrets
+
+---
+
+# 🔐 Production Best Practices
+
+```python
+import os
+
+API_KEY = os.getenv("API_KEY")
+
+headers = {
+    "x-api-key": API_KEY
+}
+```
+
+✅ Rotate keys
+✅ Use least privilege
+✅ Log auth failures
+✅ Handle token refresh
+
+---
+
+# 🔥 Mental Model (Remember This)
+
+* **API Key** → static identity
+* **Bearer Token** → temporary permission
+* **Basic Auth** → legacy credentials
+
+---
+
+## What You’re Ready For Next
+
+Strong next steps:
+
+* OAuth token generation flow
+* Refresh tokens
+* Handling `401` auto-retry
+* Rate limiting + auth
+* Signing requests (HMAC)
+
+Say the word — this is where you become *dangerously good* at APIs 🚀
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+7. Handling Responses Like a Pro
+response = requests.get(url)
+
+if response.ok:
+    data = response.json()
+else:
+    print("Error:", response.status_code, response.text)
+
+8. Timeout, Retries & Errors
+try:
+    response = requests.get(url, timeout=5)
+except requests.exceptions.Timeout:
+    print("Request timed out")
+except requests.exceptions.RequestException as e:
+    print("Error:", e)
+
+9. File Upload (Common Interview Topic)
+Postman:
+Body → form-data → file
+
+Python:
+files = {
+    "file": open("test.pdf", "rb")
+}
+
+response = requests.post(url, files=files)
+
+10. Environment Variables (Postman → Python)
+Postman:
+{{BASE_URL}}
+
+Python:
+import os
+
+BASE_URL = os.getenv("BASE_URL", "https://api.example.com")
+
+11. Postman Tests → Python Assertions
+Postman Test:
+pm.response.code === 200
+
+Python:
+assert response.status_code == 200
+
+12. Converting Postman Request to Python (Real Workflow)
+
+Build request in Postman
+
+Confirm success
+
+Copy:
+
+URL
+
+Headers
+
+Body
+
+Paste into Python
+
+👉 Postman is your API debugger; Python is your API engine
+
+13. Mini Real-World Example (Clean & Reusable)
+class APIClient:
+    def __init__(self, base_url, token=None):
+        self.base_url = base_url
+        self.headers = {}
+
+        if token:
+            self.headers["Authorization"] = f"Bearer {token}"
+
+    def get(self, endpoint, params=None):
+        return requests.get(
+            self.base_url + endpoint,
+            headers=self.headers,
+            params=params
+        )
+
+    def post(self, endpoint, payload):
+        return requests.post(
+            self.base_url + endpoint,
+            headers=self.headers,
+            json=payload
+        )
+
+
+Usage:
+
+client = APIClient("https://jsonplaceholder.typicode.com")
+
+res = client.get("/posts")
+print(res.json()[:2])
+
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 🚀 Build a real API automation project
+# https://rohit-sharma-10165d13-4204495.postman.co/workspace/Rohit-Sharma's-Workspace~b384dabd-03b0-4707-8a7a-ecd832619600/collection/52091711-d0b30b20-294d-4778-a559-80721bf2aa22?sideView=agentMode

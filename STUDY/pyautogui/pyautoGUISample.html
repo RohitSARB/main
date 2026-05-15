@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Human Automation Playground</title>
+    <style>
+        body {
+            height: 3000px;
+            font-family: Arial;
+        }
+        .card {
+            width: 300px;
+            padding: 20px;
+            margin: 40px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            background: white;
+            padding: 20px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Human Behavior Test</h1>
+
+<div class="card">
+    <input id="name" placeholder="Type your name"/>
+    <br><br>
+    <button onclick="showPopup()">Submit</button>
+</div>
+
+<div class="card">
+    <button id="scrollBtn">Scroll Test</button>
+</div>
+
+<div id="popup">
+    <p>Hello Human 👋</p>
+    <button onclick="hidePopup()">Close</button>
+</div>
+
+<script>
+function showPopup() {
+    document.getElementById("popup").style.display = "block";
+}
+function hidePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>

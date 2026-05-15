@@ -1,0 +1,6 @@
+2026-01-22 12:49:08,278 - INFO - Pipeline started
+2026-01-22 12:49:08,278 - INFO - Starting Selenium scraper
+2026-01-22 12:49:26,703 - INFO - Scraped 27 products
+2026-01-22 12:49:29,473 - INFO - Browser closed
+2026-01-22 12:49:29,473 - INFO - Starting MongoDB ingestion
+2026-01-22 12:49:29,543 - INFO - Pipeline completed successfully

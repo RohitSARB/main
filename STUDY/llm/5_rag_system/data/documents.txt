@@ -1,0 +1,9 @@
+Semantic search is a technique that retrieves information based on meaning rather than exact keyword matching.
+
+Vector databases store embeddings of documents to allow similarity search.
+
+Embeddings convert text into numerical vectors so machines can understand semantic similarity.
+
+FAISS is a library developed by Facebook for efficient similarity search over large vector collections.
+
+Retrieval-Augmented Generation (RAG) improves LLM responses by retrieving relevant context before generating answers.

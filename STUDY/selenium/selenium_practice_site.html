@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selenium Practice Site</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        .product { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+        button { padding: 5px 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Login</h1>
+<input type="text" id="username" placeholder="Username"><br><br>
+<input type="password" id="password" placeholder="Password"><br><br>
+<button id="loginBtn" onclick="login()">Login</button>
+
+<p id="loginStatus"></p>
+
+<hr>
+
+<h2>Choose Category</h2>
+<select id="category">
+    <option>Electronics</option>
+    <option>Books</option>
+    <option>Clothing</option>
+</select>
+
+<hr>
+
+<h2>Products</h2>
+
+<div class="product">
+    <h3 class="title">Laptop</h3>
+    <p class="price">$1000</p>
+    <a href="https://example.com" target="_blank">View</a>
+</div>
+
+<div class="product">
+    <h3 class="title">Book</h3>
+    <p class="price">$20</p>
+    <a href="https://example.com" target="_blank">View</a>
+</div>
+
+<button onclick="showAlert()">Buy Now</button>
+
+<hr>
+
+<iframe srcdoc="<h3>Iframe Content</h3><p id='frameText'>Inside Frame</p>" width="300" height="100"></iframe>
+
+<script>
+function login() {
+    document.getElementById("loginStatus").innerText = "Login Successful";
+}
+
+function showAlert() {
+    alert("Purchase Confirmed!");
+}
+</script>
+
+</body>
+</html>

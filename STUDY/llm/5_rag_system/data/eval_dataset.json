@@ -1,0 +1,10 @@
+[
+  {
+    "question": "What is FAISS?",
+    "expected_answer": "FAISS is a library for efficient similarity search."
+  },
+  {
+    "question": "What does FAISS support?",
+    "expected_answer": "FAISS supports GPU acceleration."
+  }
+]

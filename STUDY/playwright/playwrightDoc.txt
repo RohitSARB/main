@@ -1,0 +1,533 @@
+1️⃣ get_by_role() ⭐⭐⭐ (BEST PRACTICE)
+
+Most stable & accessible locator.
+
+page.get_by_role("button", name="Submit").click()
+page.get_by_role("link", name="More information").click()
+page.get_by_role("textbox", name="Email").fill("test@mail.com")
+page.get_by_role("checkbox", name="Remember me").check()
+
+Common roles
+Role	Example
+button	Button
+link	<a>
+textbox	input / textarea
+heading	h1–h6
+checkbox	checkbox
+radio	radio button
+combobox	select
+listitem	<li>
+2️⃣ get_by_text() / text= ⭐⭐
+Exact / partial text match
+page.get_by_text("More information").click()
+page.locator("text=More information").click()
+
+Partial text
+page.get_by_text("More", exact=False).click()
+
+3️⃣ get_by_label() ⭐⭐⭐ (Forms)
+
+Best for input fields.
+
+page.get_by_label("Email").fill("test@mail.com")
+page.get_by_label("Password").fill("secret")
+
+
+Works with:
+
+<label>Email</label>
+<input />
+
+4️⃣ get_by_placeholder()
+page.get_by_placeholder("Enter email").fill("abc@mail.com")
+
+5️⃣ get_by_alt_text() (Images)
+page.get_by_alt_text("Company logo").click()
+
+6️⃣ get_by_title()
+page.get_by_title("Close").click()
+
+7️⃣ get_by_test_id() ⭐⭐⭐ (BEST for automation)
+
+Gold standard for automation testing
+
+HTML:
+
+<button data-testid="submit-btn">Submit</button>
+
+
+Python:
+
+page.get_by_test_id("submit-btn").click()
+
+8️⃣ CSS Selectors (Most flexible)
+Basic
+page.locator("a.title").click()
+page.locator("#login").click()
+page.locator(".product").first
+
+Attribute selectors
+page.locator("input[name='email']").fill("test@mail.com")
+page.locator("button[type='submit']").click()
+
+Descendant / child
+page.locator("div.card a.title")
+page.locator("ul > li")
+
+9️⃣ Index-based locators
+page.locator("a.title").first.text_content()
+page.locator("a.title").last.click()
+page.locator("a.title").nth(2).click()
+
+🔟 Filtering locators (VERY POWERFUL)
+By text inside element
+page.locator("a").filter(has_text="More").click()
+
+By child element
+page.locator("div.card").filter(
+    has=page.locator("span.price")
+)
+
+1️⃣1️⃣ Chained locators (Recommended)
+card = page.locator("div.card").first
+card.locator("a.title").click()
+
+1️⃣2️⃣ XPath (Last resort ❌)
+page.locator("//a[contains(text(),'More')]").click()
+
+
+⚠ Use only if:
+
+No semantic roles
+
+No stable attributes
+
+Dynamic DOM
+
+1️⃣3️⃣ Shadow DOM (Playwright handles it automatically!)
+page.locator("my-component button").click()
+
+
+No special syntax required 🎉
+
+1️⃣4️⃣ iFrame locators
+frame = page.frame_locator("iframe[name='payment']")
+frame.locator("button#pay").click()
+
+1️⃣5️⃣ Regex-based locators
+import re
+page.get_by_text(re.compile("More.*info")).click()
+page.get_by_role("button", name=re.compile("Submit|Save")).click()
+
+1️⃣6️⃣ Strict mode (IMPORTANT)
+
+Playwright fails if locator matches multiple elements.
+
+Fix with:
+
+locator.first
+locator.nth(0)
+
+1️⃣7️⃣ Assertions with locators (Bonus)
+from playwright.sync_api import expect
+
+expect(page.get_by_role("heading", name="Products")).to_be_visible()
+expect(page.locator(".price")).to_have_count(3)
+
+Filter by text
+Locators can be filtered by text with the locator.filter() method. It will search for a particular string somewhere inside the element, possibly in a descendant element, case-insensitively. You can also pass a regular expression.
+
+await page
+    .getByRole('listitem')
+    .filter({ hasText: 'Product 2' })
+    .getByRole('button', { name: 'Add to cart' })
+    .click();
+
+Use a regular expression:
+
+await page
+    .getByRole('listitem')
+    .filter({ hasText: /Product 2/ })
+    .getByRole('button', { name: 'Add to cart' })
+    .click();
+
+Filter by not having text
+Alternatively, filter by not having text:
+
+// 5 in-stock items
+await expect(page.getByRole('listitem').filter({ hasNotText: 'Out of stock' })).toHaveCount(5);
+
+
+
+
+1️⃣ What is a “dialog” in Playwright?
+
+A dialog is a browser-native popup created by JavaScript:
+
+JS Function	Dialog Type
+alert()	Alert
+confirm()	Confirm
+prompt()	Prompt
+beforeunload	Page exit warning
+
+These are not HTML elements, so:
+❌ You cannot inspect them
+❌ You cannot use locators
+✅ You must handle them via Playwright events
+
+2️⃣ Your code – line-by-line explanation
+page.once("dialog", lambda dialog: dialog.accept())
+page.click("#alert-btn")
+
+Dry run:
+
+page.once("dialog", ...)
+
+Registers a one-time listener
+
+Only the next dialog is handled
+
+User action:
+
+page.click("#alert-btn")
+
+
+→ JS executes alert("...")
+
+Playwright intercepts the dialog
+
+dialog.accept() clicks OK
+
+page.once("dialog", lambda dialog: dialog.dismiss())
+page.click("#confirm-btn")
+
+Dry run:
+
+Register one-time handler
+
+Button triggers confirm("Are you sure?")
+
+dismiss() clicks Cancel
+
+3️⃣ Dialog object – EVERYTHING you can do
+
+Inside the lambda, dialog is a Dialog object.
+
+page.once("dialog", lambda dialog: print(dialog.message))
+
+Available properties & methods:
+Method / Property	Meaning
+dialog.type	"alert", "confirm", "prompt", "beforeunload"
+dialog.message	Text shown in popup
+dialog.accept()	Click OK
+dialog.accept("text")	Fill prompt + OK
+dialog.dismiss()	Click Cancel
+4️⃣ Handling PROMPT dialogs (very important)
+JavaScript:
+prompt("Enter your name")
+
+Playwright:
+page.once(
+    "dialog",
+    lambda dialog: dialog.accept("Rohit")
+)
+page.click("#prompt-btn")
+
+
+✔ Enters text
+✔ Clicks OK
+
+5️⃣ Reusable dialog handler (PRO STYLE)
+
+Instead of repeating lambdas:
+
+def handle_dialog(dialog):
+    print("Type:", dialog.type)
+    print("Message:", dialog.message)
+
+    if dialog.type == "alert":
+        dialog.accept()
+
+    elif dialog.type == "confirm":
+        dialog.dismiss()
+
+    elif dialog.type == "prompt":
+        dialog.accept("Auto response")
+
+
+Usage:
+
+page.once("dialog", handle_dialog)
+page.click("#alert-btn")
+
+6️⃣ Handling MULTIPLE dialogs (not just once)
+❌ once → only one dialog
+✅ on → handle all dialogs
+page.on("dialog", lambda dialog: dialog.accept())
+
+
+⚠️ Be careful:
+This will accept every dialog, even unexpected ones.
+
+7️⃣ Safe pattern (register BEFORE action)
+
+❌ WRONG:
+
+page.click("#alert-btn")
+page.once("dialog", ...)
+
+
+✔ RIGHT:
+
+page.once("dialog", lambda d: d.accept())
+page.click("#alert-btn")
+
+
+Dialogs block JS execution — if handler isn’t ready, test hangs.
+
+8️⃣ Waiting for dialogs explicitly
+with page.expect_event("dialog") as d:
+    page.click("#alert-btn")
+
+dialog = d.value
+print(dialog.message)
+dialog.accept()
+
+
+✔ Best for debugging
+✔ Best when dialog text matters
+
+9️⃣ Real-world test scenarios
+✔ Assert dialog text
+with page.expect_event("dialog") as d:
+    page.click("#delete-btn")
+
+dialog = d.value
+assert "Are you sure" in dialog.message
+dialog.accept()
+
+✔ Handle beforeunload (page close warning)
+page.on("dialog", lambda d: d.accept())
+page.close()
+
+🔟 Playwright vs Selenium (why this is better)
+Feature	Selenium	Playwright
+Alert handling	switch_to.alert	Event-based
+Multiple dialogs	Painful	Clean
+Prompt text	Awkward	Easy
+Reliability	Medium	High
+
+
+
+
+
+
+Good snippet 👍
+Let me **explain what’s happening**, **what’s wrong / fragile**, and then give you **production-grade Playwright ways** to do infinite scroll (fast + reliable).
+
+---
+
+## 🔍 What your current code does
+
+```python
+container = page.locator("#infinite")
+```
+
+➡️ Targets a **scrollable div**, not the full page.
+
+```python
+container.evaluate("el => el.scrollTop = el.scrollHeight")
+```
+
+➡️ Programmatically jumps to the **bottom of the container**.
+
+```python
+time.sleep(0.5)
+```
+
+➡️ Blind wait (works, but unreliable).
+
+```python
+items = container.locator(".card")
+print("Items loaded:", items.count())
+```
+
+➡️ Counts cards after scrolling.
+
+---
+
+## ⚠️ Issues with current approach
+
+1. ❌ **Hard sleep (`time.sleep`)**
+
+   * Breaks on slow networks
+   * Unnecessary waiting on fast ones
+
+2. ❌ **Blind looping (`for _ in range(5)`)**
+
+   * Might stop too early
+   * Might scroll too much
+
+3. ❌ **No “did new content load?” check**
+
+   * Infinite scroll is about **detecting growth**
+
+---
+
+## ✅ Best Practice #1 — Scroll until no new items load (RECOMMENDED)
+
+### ✔ Most reliable pattern
+
+```python
+container = page.locator("#infinite")
+items = container.locator(".card")
+
+prev_count = 0
+
+while True:
+    container.evaluate("el => el.scrollTop = el.scrollHeight")
+
+    # wait for either new items or timeout
+    try:
+        page.wait_for_function(
+            "(container, prev) => container.querySelectorAll('.card').length > prev",
+            arg=(container, prev_count),
+            timeout=3000
+        )
+    except:
+        break  # no new items loaded
+
+    curr_count = items.count()
+    if curr_count == prev_count:
+        break
+
+    prev_count = curr_count
+
+print("Total items loaded:", prev_count)
+```
+
+✅ Scrolls **only when needed**
+✅ Stops automatically
+✅ No blind sleep
+
+---
+
+## ✅ Best Practice #2 — Playwright-native scrolling (simpler)
+
+```python
+container = page.locator("#infinite")
+items = container.locator(".card")
+
+prev = 0
+for _ in range(10):
+    container.evaluate("el => el.scrollTop = el.scrollHeight")
+    items.first.wait_for(timeout=3000)
+
+    curr = items.count()
+    if curr == prev:
+        break
+    prev = curr
+
+print("Items loaded:", prev)
+```
+
+✔ Less code
+✔ Still robust
+❌ Slightly less precise than #1
+
+---
+
+## ✅ Best Practice #3 — Mouse wheel scrolling (human-like)
+
+Since you already care about realism:
+
+```python
+box = container.bounding_box()
+
+for _ in range(10):
+    page.mouse.move(
+        box["x"] + box["width"] / 2,
+        box["y"] + box["height"] / 2
+    )
+    page.mouse.wheel(0, 800)
+    page.wait_for_timeout(400)
+
+print("Items loaded:", container.locator(".card").count())
+```
+
+✔ Triggers **real scroll events**
+✔ Works on JS-heavy sites
+❌ Slightly slower
+
+---
+
+## ❌ What NOT to do
+
+```python
+time.sleep(5)
+for _ in range(100):
+    scroll()
+```
+
+🚫 Flaky
+🚫 Slow
+🚫 Bot-detectable
+
+---
+
+## 🧠 How to choose
+
+| Scenario              | Use                  |
+| --------------------- | -------------------- |
+| Scraping / production | **Best Practice #1** |
+| Quick scripts         | #2                   |
+| Anti-bot / demos      | #3                   |
+
+---
+
+## ✅ Your original code — fixed minimally
+
+If you want **smallest change**:
+
+```python
+container = page.locator("#infinite")
+items = container.locator(".card")
+
+prev = items.count()
+
+for _ in range(10):
+    container.evaluate("el => el.scrollTop = el.scrollHeight")
+    page.wait_for_timeout(400)
+
+    curr = items.count()
+    if curr == prev:
+        break
+    prev = curr
+
+print("Items loaded:", prev)
+```
+
+---
+
+If you want, next I can show:
+
+* 🔁 **Auto-scroll until API stops responding**
+* 🧪 **Debug infinite scroll visually**
+* ⚡ **Fastest possible scroll for scraping**
+* 🛡️ **Anti-detection scroll patterns**
+
+Just tell me 👍
+
+
+Final Recommendation (for scripts)
+
+For non-test automation (scraping, bots, pipelines):
+
+if items.count() != 1:
+    raise Exception("Product 2 not found exactly once")
+
+
+For tests:
+
+from playwright.sync_api import expect
+expect(items).to_have_count(1)

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple SVG Cursor Demo</title>
+    <style>
+        body {
+            font-family: Arial;
+            height: 1500px;
+            padding: 40px;
+            cursor: none; /* Hide real cursor */
+        }
+
+        input, textarea, button {
+            display: block;
+            margin: 20px 0;
+            padding: 8px;
+            width: 300px;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            z-index: 999999;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Automation Demo Page</h1>
+
+<input type="text" id="searchBox" placeholder="Search here...">
+<label>
+    <input type="checkbox" id="agreeBox"> I agree
+</label>
+<textarea id="comments" placeholder="Write something..."></textarea>
+<button id="submitBtn">Submit</button>
+
+<script>
+let cursor;
+
+function createCursor() {
+    cursor = document.createElement("div");
+    cursor.id = "custom-cursor";
+
+    cursor.innerHTML = `
+        <svg viewBox="0 0 24 24" width="24" height="24">
+            <polygon points="0,0 0,22 6,16 10,23 13,22 9,15 18,15"
+                fill="white"
+                stroke="black"
+                stroke-width="1"/>
+        </svg>
+    `;
+
+    cursor.style.left = "0px";
+    cursor.style.top = "0px";
+
+    document.body.appendChild(cursor);
+}
+
+function moveCursorSmooth(x, y) {
+    return new Promise(resolve => {
+
+        const startX = parseFloat(cursor.style.left);
+        const startY = parseFloat(cursor.style.top);
+
+        // Random duration between 1–4 seconds
+        const duration = 1000 + Math.random() * 3000;
+
+        const startTime = performance.now();
+
+        // Random control point for Bezier curve
+        const cpX = startX + (x - startX) / 2 + (Math.random() - 0.5) * 200;
+        const cpY = startY + (y - startY) / 2 + (Math.random() - 0.5) * 200;
+
+        function easeInOut(t) {
+            return t < 0.5
+                ? 2 * t * t
+                : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
+        function quadraticBezier(t, p0, p1, p2) {
+            return (1 - t) * (1 - t) * p0 +
+                   2 * (1 - t) * t * p1 +
+                   t * t * p2;
+        }
+
+        function animate(time) {
+            let rawProgress = (time - startTime) / duration;
+            let progress = Math.min(rawProgress, 1);
+
+            let eased = easeInOut(progress);
+
+            // Bezier curved path
+            let currentX = quadraticBezier(eased, startX, cpX, x);
+            let currentY = quadraticBezier(eased, startY, cpY, y);
+
+            // Micro jitter during travel
+            currentX += (Math.random() - 0.125) * 0.5;
+            currentY += (Math.random() - 0.125) * 0.5;
+
+            cursor.style.left = currentX + "px";
+            cursor.style.top = currentY + "px";
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+
+                // Small correction wiggle at destination
+                let wiggleCount = Math.random() > 0.5 ? 3 : 0;
+
+                function wiggle(i) {
+                    if (i <= 0) {
+                        resolve();
+                        return;
+                    }
+
+                    cursor.style.left = (x + (Math.random() - 0.5) * 4) + "px";
+                    cursor.style.top = (y + (Math.random() - 0.5) * 4) + "px";
+
+                    setTimeout(() => wiggle(i - 1), 40);
+                }
+
+                wiggle(wiggleCount);
+            }
+        }
+
+        requestAnimationFrame(animate);
+    });
+}
+
+
+window.onload = createCursor;
+</script>
+
+</body>
+</html>

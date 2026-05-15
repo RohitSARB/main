@@ -1,0 +1,31 @@
+The easiest example (real-world analogy)
+Imagine a student taking an exam
+📘 RAG = Open-book exam
+
+Student is already smart (pretrained model)
+
+You give them:
+
+your notes
+
+your textbook
+
+your company docs
+
+They read the notes during the exam
+
+Notes can be updated anytime
+
+👉 If the book changes, no retraining needed.
+
+🧠 Fine-tuning = Training the student beforehand
+
+You train the student repeatedly
+
+They memorize patterns
+
+They don’t get a book during the exam
+
+If info changes → you must retrain
+
+👉 Great for habits, bad for changing facts.
